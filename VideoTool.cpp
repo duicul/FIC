@@ -176,6 +176,7 @@ void trackFilteredObject(int &x, int &y, Mat threshold, Mat &cameraFeed) {
 				//draw object location on screen
 				//cout << x << "," << y;
 				drawObject(x, y, cameraFeed);
+				line(frame, Point(a.x, a.y), Point(b.x , b.y), Scalar(0, 0, 255), 2);
 
 			}
 
@@ -187,8 +188,8 @@ void trackFilteredObject(int &x, int &y, Mat threshold, Mat &cameraFeed) {
 
 /*void showrobo(Mat cameraFeed,Mat HSV,Mat th,Mat th1,struct robo a,struct robo b,VideoCapture capture,bool trackObjects,bool useMorphOps)
 {
-  
-  
+
+
 }
 */
 int main(int argc, char* argv[])
@@ -224,12 +225,7 @@ int main(int argc, char* argv[])
 	//start an infinite loop where webcam feed is copied to cameraFeed matrix
 	//all of our operations will be performed within this loop
 
-
-
-	
 	while (1) {
-
-
 		//store image to matrix
 		capture.read(cameraFeed);
 		//convert frame from BGR to HSV colorspace
