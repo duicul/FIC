@@ -35,7 +35,7 @@ int main(int argc, char const *argv[])
     memset(&serv_addr, '0', sizeof(serv_addr));
   
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(atoi(argv[2]);
+    serv_addr.sin_port = htons(atoi(argv[2]));
       
     // Convert IPv4 and IPv6 addresses from text to binary form
     if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0) 
@@ -49,6 +49,7 @@ int main(int argc, char const *argv[])
         printf("\nConnection Failed \n");
         return -1;
     }
+    printf("%s %s %s\n",argv[1],argv[2],argv[3]);
     if(argc>=4)
     {int i;
     printf("%s",argv[3]);
