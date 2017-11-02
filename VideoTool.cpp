@@ -5,6 +5,65 @@
 #include "opencv2/highgui/highgui.hpp"
 //#include <opencv2\cv.h>
 #include "opencv2/opencv.hpp"
+#include <stdio.h>
+#include <sys/socket.h>
+#include <stdlib.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <time.h>
+#define PORT 20232
+#define DEL 2000
+    struct sockaddr_in address;
+    int sock = 0, valread;
+    struct sockaddr_in serv_addr;
+
+
+void delay(int number_of_seconds)
+{int milli_seconds = 1000 * number_of_seconds;
+ clock_t start_time = clock();
+ while (clock() < start_time + milli_seconds);
+}
+
+int setsock(int port,char ip[])
+{    char hello[100];
+    char buffer[1024] = {0};
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+        printf("\n Socket creation error \n");
+        return -1;
+    }
+    memset(&serv_addr, '0', sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(port);
+    // Convert IPv4 and IPv6 addresses from text to binary form
+    if(inet_pton(AF_INET, ip, &serv_addr.sin_addr)<=0)
+    { printf("\nInvalid address/ Address not supported \n");
+        return -1;}
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    {
+        printf("\nConnection Failed \n");
+        return -1;
+    }
+    printf("%d %s\n",port,ip);
+    return 0;
+}
+
+void strateg(char mv[])
+{int i;
+    printf("%s",mv);
+    for(i=0;i<strlen(mv);i++)
+    {printf("%c\n",mv[i]);
+      if(mv[i]=='f'||mv[i]=='b'||mv[i]=='r'||mv[i]=='l'||mv[i]=='s')
+      {sprintf(hello,"%c\n",mv[i]);
+       printf("%s sent\n",hello);
+    send(sock , hello , strlen(hello) , 0 );
+    delay(DEL);}
+    }
+   strcpy(hello,"s \n");
+        send(sock , hello , strlen(hello) , 0 );
+    printf("%s sent\n",hello);
+    delay(DEL);
+}
 
 using namespace std;
 using namespace cv;
@@ -224,7 +283,7 @@ int main(int argc, char* argv[])
 	capture.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
 	//start an infinite loop where webcam feed is copied to cameraFeed matrix
 	//all of our operations will be performed within this loop
-
+    setsock(32356,"192.168.1.1");
 	while (1) {
 		//store image to matrix
 		capture.read(cameraFeed);
