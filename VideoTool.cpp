@@ -285,12 +285,12 @@ int main(int argc, char* argv[])
 	capture.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
 	//start an infinite loop where webcam feed is copied to cameraFeed matrix
 	//all of our operations will be performed within this loop
- int i,var=30;
+ int i,var=20;
  float m;
  struct robo oldpos,newpos;
  setsock(20232,"193.226.12.217");
-    while (1) 
-  {for(i=0;i<2;i++)	
+    while (1)
+  {for(i=0;i<2;i++)
    {           //store image to matrix
 		capture.read(cameraFeed);
 		//convert frame from BGR to HSV colorspace
@@ -318,7 +318,7 @@ int main(int argc, char* argv[])
 		//delay 30ms so that screen can refresh.
 		//image will not appear without this waitKey() command
 		waitKey(40);
-	 //a-roz  b-galben 
+	 //a-roz  b-galben
 	if(i==0)
 	{oldpos=b;strateg("fs");
 	  printf("oldpos %d-%d\n",oldpos.x,oldpos.y);
@@ -328,12 +328,13 @@ int main(int argc, char* argv[])
 	  printf("newpos %d-%d",newpos.x,newpos.y);
 	  m=(float)(newpos.y-oldpos.y)/(float)(newpos.x-oldpos.x);
 	  line(cameraFeed, Point(oldpos.x, oldpos.y), Point(newpos.x , newpos.y), Scalar(0, 100, 255), 2);
-	  if(a.y>m*(b.x-newpos.x) +newpos.y+var)
+	  if(oldpos.x!=newpos.x&&oldpos.y!=newpos.y)
+      {if(a.y>m*(b.x-newpos.x) +newpos.y+var)
 	   strateg("dfs");
 	  else if(b.y<m*(b.x-newpos.x) +newpos.y-var)
 	    strateg("lfs");
 	 else strateg("ffs");
-	  }
+	  }}
 	  //waitKey(40);
    }
   }
