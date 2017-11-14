@@ -11,8 +11,9 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <time.h>
+#include <arpa/inet.h>
 #define PORT 20232
-#define DEL 2000
+#define DEL 500
     struct sockaddr_in address;
     int sock = 0, valread;
     struct sockaddr_in serv_addr;
@@ -24,7 +25,7 @@ void delay(int number_of_seconds)
  while (clock() < start_time + milli_seconds);
 }
 
-int setsock(int port,char ip[])
+int setsock(int port,const char ip[100])
 {    char hello[100];
     char buffer[1024] = {0};
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -48,8 +49,9 @@ int setsock(int port,char ip[])
     return 0;
 }
 
-void strateg(char mv[])
+void strateg(const char mv[100])
 {int i;
+char hello[100];
     printf("%s",mv);
     for(i=0;i<strlen(mv);i++)
     {printf("%c\n",mv[i]);
@@ -235,7 +237,7 @@ void trackFilteredObject(int &x, int &y, Mat threshold, Mat &cameraFeed) {
 				//draw object location on screen
 				//cout << x << "," << y;
 				drawObject(x, y, cameraFeed);
-				line(frame, Point(a.x, a.y), Point(b.x , b.y), Scalar(0, 0, 255), 2);
+				line(cameraFeed, Point(a.x, a.y), Point(b.x , b.y), Scalar(0, 0, 255), 2);
 
 			}
 
@@ -283,9 +285,13 @@ int main(int argc, char* argv[])
 	capture.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
 	//start an infinite loop where webcam feed is copied to cameraFeed matrix
 	//all of our operations will be performed within this loop
-    setsock(32356,"192.168.1.1");
-	while (1) {
-		//store image to matrix
+ int i,var=30;
+ float m;
+ struct robo oldpos,newpos;
+ setsock(20232,"193.226.12.217");
+    while (1) 
+  {for(i=0;i<2;i++)	
+   {           //store image to matrix
 		capture.read(cameraFeed);
 		//convert frame from BGR to HSV colorspace
 		cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
@@ -307,12 +313,30 @@ int main(int argc, char* argv[])
 		imshow(windowName4, threshold1);
 		imshow(windowName2, threshold);
 		imshow(windowName, cameraFeed);
-		imshow(windowName1, HSV);
+		//imshow(windowName1, HSV);
 		setMouseCallback("Original Image", on_mouse, &p);
 		//delay 30ms so that screen can refresh.
 		//image will not appear without this waitKey() command
-		waitKey(30);
+		waitKey(40);
+	 //a-roz  b-galben 
+	if(i==0)
+	{oldpos=b;strateg("fs");
+	  printf("oldpos %d-%d\n",oldpos.x,oldpos.y);
 	}
+	else if(i==1)
+	{newpos=b;
+	  printf("newpos %d-%d",newpos.x,newpos.y);
+	  m=(float)(newpos.y-oldpos.y)/(float)(newpos.x-oldpos.x);
+	  line(cameraFeed, Point(oldpos.x, oldpos.y), Point(newpos.x , newpos.y), Scalar(0, 100, 255), 2);
+	  if(a.y>m*(b.x-newpos.x) +newpos.y+var)
+	   strateg("dfs");
+	  else if(b.y<m*(b.x-newpos.x) +newpos.y-var)
+	    strateg("lfs");
+	 else strateg("ffs");
+	  }
+	  //waitKey(40);
+   }
+  }
 
 	return 0;
 }
