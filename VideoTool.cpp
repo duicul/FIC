@@ -12,6 +12,7 @@
 #include <string.h>
 #include <time.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 #define PORT 20232
 #define DEL 500
     struct sockaddr_in address;
@@ -19,10 +20,9 @@
     struct sockaddr_in serv_addr;
 
 
-void delay(int number_of_seconds)
-{int milli_seconds = 1000 * number_of_seconds;
- clock_t start_time = clock();
- while (clock() < start_time + milli_seconds);
+void delay(int milli_seconds)
+{int micro_seconds = 1000 * milli_seconds;
+ usleep(micro_seconds);
 }
 
 int setsock(int port,const char ip[100])
@@ -320,7 +320,7 @@ int main(int argc, char* argv[])
 		waitKey(40);
 	 //a-roz  b-galben
 	if(i==0)
-	{oldpos=b;strateg("fs",0.3);
+	{oldpos=b;strateg("fs",300);
 	  printf("oldpos %d-%d\n",oldpos.x,oldpos.y);
 	}
 	else if(i==1)
@@ -330,10 +330,10 @@ int main(int argc, char* argv[])
 	  line(cameraFeed, Point(oldpos.x, oldpos.y), Point(newpos.x , newpos.y), Scalar(0, 100, 255), 2);
 	  if(oldpos.x!=newpos.x&&oldpos.y!=newpos.y)
       {if(a.y>m*(b.x-newpos.x) +newpos.y+var)
-	   strateg("rfs",0.3);
+	   strateg("rfs",300);
 	  else if(b.y<m*(b.x-newpos.x) +newpos.y-var)
-	    strateg("lfs",0.3);
-	 else strateg("ffs",0.2);
+	    strateg("lfs",300);
+	 else strateg("ffs",200);
 	  }}
 	  //waitKey(40);
    }
