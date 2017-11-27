@@ -49,7 +49,7 @@ int setsock(int port,const char ip[100])
     return 0;
 }
 
-void strateg(const char mv[100])
+void strateg(const char mv[100],int del)
 {int i;
 char hello[100];
     printf("%s",mv);
@@ -59,12 +59,12 @@ char hello[100];
       {sprintf(hello,"%c\n",mv[i]);
        printf("%s sent\n",hello);
     send(sock , hello , strlen(hello) , 0 );
-    delay(DEL);}
+    delay(del);}
     }
    strcpy(hello,"s \n");
         send(sock , hello , strlen(hello) , 0 );
     printf("%s sent\n",hello);
-    delay(DEL);
+    delay(del);
 }
 
 using namespace std;
@@ -320,7 +320,7 @@ int main(int argc, char* argv[])
 		waitKey(40);
 	 //a-roz  b-galben
 	if(i==0)
-	{oldpos=b;strateg("fs");
+	{oldpos=b;strateg("fs",0.3);
 	  printf("oldpos %d-%d\n",oldpos.x,oldpos.y);
 	}
 	else if(i==1)
@@ -330,10 +330,10 @@ int main(int argc, char* argv[])
 	  line(cameraFeed, Point(oldpos.x, oldpos.y), Point(newpos.x , newpos.y), Scalar(0, 100, 255), 2);
 	  if(oldpos.x!=newpos.x&&oldpos.y!=newpos.y)
       {if(a.y>m*(b.x-newpos.x) +newpos.y+var)
-	   strateg("dfs");
+	   strateg("rfs",0.3);
 	  else if(b.y<m*(b.x-newpos.x) +newpos.y-var)
-	    strateg("lfs");
-	 else strateg("ffs");
+	    strateg("lfs",0.3);
+	 else strateg("ffs",0.2);
 	  }}
 	  //waitKey(40);
    }
