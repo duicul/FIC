@@ -31,6 +31,8 @@ time.h
 -
 arpa/inet.h
 -
+unistd.h
+-
 
 /usr/local/include/opencv/cxcore.h
 opencv2/core/core_c.h
