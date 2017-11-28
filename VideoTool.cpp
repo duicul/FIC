@@ -284,12 +284,13 @@ int main(int argc, char* argv[])
 	//all of our operations will be performed within this loop
 
  int i,var=20;
- float m,nd=0,od=0;
+ float m;
+ int nd=0,od=0;
  printf("Socket begin");
  struct robo oldpos,newpos;
- //setsock(20232,"193.226.12.217");
- //strateg("ss",200);
- 
+ setsock(20232,"193.226.12.217");
+ strateg("ss",200);
+
     while (1)
   {for(i=0;i<2;i++)
    {           //store image to matrix
@@ -321,7 +322,7 @@ int main(int argc, char* argv[])
 		waitKey(40);
 	 //a-roz  b-galben
 	if(i==0)
-	{oldpos=b;//strateg("fs",300);
+	{oldpos=b;strateg("fs",300);
 	  printf("oldpos %d-%d\n",oldpos.x,oldpos.y);
 	}
 	else if(i==1)
@@ -332,25 +333,24 @@ int main(int argc, char* argv[])
 	  if(oldpos.x!=newpos.x&&oldpos.y!=newpos.y)
       {nd=sqrt((newpos.x-a.x)^2+(newpos.y-a.y)^2);
        od=sqrt((oldpos.x-a.x)^2+(oldpos.y-a.y)^2);
-	printf("New dist= %f Old dist= %f \n",nd,od);
+	printf("New dist= %d Old dist= %d \n",nd,od);
        if(nd>od)
 	{printf("Reverse\n");
 	  if(a.y>m*(b.x-newpos.x) +newpos.y+var)
-	  {//strateg("ll",300);
+	  {strateg("ll",300);
 	  }
 	  else if(b.y<=m*(b.x-newpos.x) +newpos.y-var)
-	  {//strateg("rr",300);   
-	    
-	  } 
+	  {strateg("rr",300);
+	  }
 	}
 	else{
 	if(a.y>m*(b.x-newpos.x) +newpos.y+var)
-	{//strateg("rf",300);
+	{strateg("rf",300);
 	}
 	  else if(b.y<m*(b.x-newpos.x) +newpos.y-var)
-	  {//strateg("lf",300);
+	  {strateg("lf",300);
 	  }
-	 else {//strateg("ff",1000);
+	 else {strateg("ff",1000);
 	 }
 	}
 	  }}
@@ -360,4 +360,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-

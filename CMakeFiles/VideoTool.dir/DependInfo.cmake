@@ -4,7 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/cloud/DuicuFlorea/FIC/VideoTool.cpp" "/home/cloud/DuicuFlorea/FIC/CMakeFiles/VideoTool.dir/VideoTool.cpp.o"
+  "/home/cloud/FIC/VideoTool.cpp" "/home/cloud/FIC/CMakeFiles/VideoTool.dir/VideoTool.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 
