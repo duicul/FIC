@@ -13,6 +13,7 @@
 #include <time.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <math.h>
 #define PORT 20232
 #define DEL 500
     struct sockaddr_in address;
@@ -64,7 +65,7 @@ char hello[100];
    strcpy(hello,"s \n");
         send(sock , hello , strlen(hello) , 0 );
     printf("%s sent\n",hello);
-    delay(del);
+    delay(del/2);
 }
 
 using namespace std;
@@ -254,7 +255,7 @@ void trackFilteredObject(int &x, int &y, Mat threshold, Mat &cameraFeed) {
 }
 */
 int main(int argc, char* argv[])
-{
+{printf("Start");
 
 	//some boolean variables for different functionality within this
 	//program
@@ -286,9 +287,11 @@ int main(int argc, char* argv[])
 	//start an infinite loop where webcam feed is copied to cameraFeed matrix
 	//all of our operations will be performed within this loop
  int i,var=20;
- float m;
+ float m,nd=0,od=0;
+ printf("Socket begin");
  struct robo oldpos,newpos;
  setsock(20232,"193.226.12.217");
+ strateg("ss",200);
     while (1)
   {for(i=0;i<2;i++)
    {           //store image to matrix
@@ -329,13 +332,25 @@ int main(int argc, char* argv[])
 	  m=(float)(newpos.y-oldpos.y)/(float)(newpos.x-oldpos.x);
 	  line(cameraFeed, Point(oldpos.x, oldpos.y), Point(newpos.x , newpos.y), Scalar(0, 100, 255), 2);
 	  if(oldpos.x!=newpos.x&&oldpos.y!=newpos.y)
-      {if(a.y>m*(b.x-newpos.x) +newpos.y+var)
-	   strateg("rfs",300);
+      {nd=sqrt((newpos.x-a.x)^2+(newpos.y-a.y)^2);
+       od=sqrt((oldpos.x-a.x)^2+(oldpos.y-a.y)^2);
+	printf("New dist= %f Old dist= %f \n",nd,od);
+       if(nd>od)
+	{printf("Reverse\n");
+	  if(a.y>m*(b.x-newpos.x) +newpos.y+var)
+	  strateg("ll",300);
+	  else if(b.y<=m*(b.x-newpos.x) +newpos.y-var)
+	    strateg("rr",300);    
+	}
+	else{
+	if(a.y>m*(b.x-newpos.x) +newpos.y+var)
+	   strateg("rf",300);
 	  else if(b.y<m*(b.x-newpos.x) +newpos.y-var)
-	    strateg("lfs",300);
-	 else strateg("ffs",200);
+	    strateg("lf",300);
+	 else strateg("ff",1000);
+	}
 	  }}
-	  //waitKey(40);
+
    }
   }
 
