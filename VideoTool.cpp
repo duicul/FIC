@@ -330,7 +330,7 @@ int main(int argc, char* argv[])
 	  printf("newpos %d-%d",newpos.x,newpos.y);
 	  m=(float)(newpos.y-oldpos.y)/(float)(newpos.x-oldpos.x);
 	  line(cameraFeed, Point(oldpos.x, oldpos.y), Point(newpos.x , newpos.y), Scalar(0, 100, 255), 2);
-	  if(oldpos.x!=newpos.x&&oldpos.y!=newpos.y)
+	  if(oldpos.x!=newpos.x||oldpos.y!=newpos.y)
       {nd=sqrt((newpos.x-a.x)^2+(newpos.y-a.y)^2);
        od=sqrt((oldpos.x-a.x)^2+(oldpos.y-a.y)^2);
 	printf("New dist= %d Old dist= %d \n",nd,od);
