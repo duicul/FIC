@@ -248,6 +248,13 @@ void trackFilteredObject(int &x, int &y, Mat threshold, Mat &cameraFeed) {
 	}
 }
 
+void setObj(Scalar mn,Scalar mx,Mat tr,Mat cf,Mat HSV,bool useMorphOps,bool trackObjects,struct robo *a)
+{inRange(HSV, mn , mx , tr);
+ if (useMorphOps)
+		{morphOps(tr);}
+  if (trackObjects)
+		{trackFilteredObject(a->x, a->y, tr, cf);}
+}
 
 
 int main(int argc, char* argv[])
@@ -299,7 +306,9 @@ int main(int argc, char* argv[])
 		cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
 		//filter HSV image between values and store filtered image to
 		//threshold matrix
-		inRange(HSV, Scalar(H_MIN, S_MIN, V_MIN), Scalar(H_MAX, S_MAX, V_MAX), threshold);
+		setObj(Scalar(H_MIN,S_MIN,V_MIN),Scalar(H_MAX,S_MAX,V_MAX),threshold,cameraFeed,HSV,useMorphOps,trackObjects,&a);
+		setObj(Scalar(H_MIN1,S_MIN1,V_MIN1),Scalar(H_MAX1,S_MAX1,V_MAX1),threshold1,cameraFeed,HSV,useMorphOps,trackObjects,&b);
+		/*inRange(HSV, Scalar(H_MIN, S_MIN, V_MIN), Scalar(H_MAX, S_MAX, V_MAX), threshold);
 		inRange(HSV, Scalar(H_MIN1, S_MIN1, V_MIN1), Scalar(H_MAX1, S_MAX1, V_MAX1), threshold1);
 		//perform morphological operations on thresholded image to eliminate noise
 		//and emphasize the filtered object(s)
@@ -310,7 +319,7 @@ int main(int argc, char* argv[])
 		//filtered object
 		if (trackObjects)
 		{trackFilteredObject(a.x, a.y, threshold, cameraFeed);
-                 trackFilteredObject(b.x, b.y, threshold1, cameraFeed);}
+                 trackFilteredObject(b.x, b.y, threshold1, cameraFeed);}*/
 		//show frames
 		imshow(windowName4, threshold1);
 		imshow(windowName2, threshold);
