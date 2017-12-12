@@ -257,6 +257,7 @@ void trackFilteredObject(int &x, int &y, Mat threshold, Mat &cameraFeed) {
 }
 */
 
+
 int main(int argc, char* argv[])
 {printf("Start");
 
@@ -313,13 +314,14 @@ int main(int argc, char* argv[])
 		//perform morphological operations on thresholded image to eliminate noise
 		//and emphasize the filtered object(s)
 		if (useMorphOps)
-		{morphOps(threshold);morphOps(threshold1);}
+		{morphOps(threshold);
+		 morphOps(threshold1);}
 		//pass in thresholded frame to our object tracking function
 		//this function will return the x and y coordinates of the
 		//filtered object
 		if (trackObjects)
 		{trackFilteredObject(a.x, a.y, threshold, cameraFeed);
-                 trackFilteredObject(b.x, b.y, threshold1, cameraFeed);}
+         trackFilteredObject(b.x, b.y, threshold1,cameraFeed);}
 		//show frames
 		//imshow(windowName4, threshold1);
 		//imshow(windowName2, threshold);
@@ -328,7 +330,7 @@ int main(int argc, char* argv[])
 		setMouseCallback("Original Image", on_mouse, &p);
 		//delay 30ms so that screen can refresh.
 		//image will not appear without this waitKey() command
-		waitKey(30);
+		waitKey(50);
 	 //a-roz  b-galben
 	if(i==0)
 	{oldpos=b;strateg("fs",300);
@@ -346,26 +348,19 @@ int main(int argc, char* argv[])
        if(nd>od)
 	{printf("Reverse\n");
 	  if(a.y>m*(a.x-newpos.x) +newpos.y+var)
-	  {strateg("ll",300);
-	  }
+	  {strateg("ll",300);}
 	  else if(a.y<=m*(a.x-newpos.x) +newpos.y-var)
-	  {strateg("rr",300);
-	  }
+	  {strateg("rr",300);}
 	}
 	else{
 	if(a.y>m*(a.x-newpos.x) +newpos.y+var)
-	{strateg("rf",300);
-	}
+	{strateg("rf",300);}
 	  else if(a.y<m*(a.x-newpos.x) +newpos.y-var)
-	  {strateg("lf",300);
-	  }
-	 else {strateg("ff",1000);
-	 }
-	}
-	  }}
+	  {strateg("lf",300);}
+	 else {strateg("ff",1000);}
+	}}}
 
    }
-waitKey(30);
   }
 
 	return 0;
