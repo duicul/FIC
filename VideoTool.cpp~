@@ -73,18 +73,18 @@ using namespace cv;
 //initial min and max HSV filter values.
 //these will be changed using trackbars
 struct robo{int x,y;}a,b;
-int H_MIN = 164;
+int H_MIN = /*164*/111;
 int H_MAX = 181;
-int S_MIN = 49;
+int S_MIN = /*49*/0;
 int S_MAX = 256;
 int V_MIN = 0;
 int V_MAX = 256;
 
-int H_MIN1 = 28;
-int H_MAX1 = 56;
-int S_MIN1 = 49;
-int S_MAX1 = 256;
-int V_MIN1 = 0;
+int H_MIN1 = /*28*/47;
+int H_MAX1 = /*56*/89;
+int S_MIN1 = /*49*/23;
+int S_MAX1 = /*256*/119;
+int V_MIN1 = /*0*/106;
 int V_MAX1 = 256;
 //default capture width and height
 const int FRAME_WIDTH = 640;
@@ -321,14 +321,14 @@ int main(int argc, char* argv[])
 		{trackFilteredObject(a.x, a.y, threshold, cameraFeed);
                  trackFilteredObject(b.x, b.y, threshold1, cameraFeed);}
 		//show frames
-		imshow(windowName4, threshold1);
-		imshow(windowName2, threshold);
+		//imshow(windowName4, threshold1);
+		//imshow(windowName2, threshold);
 		imshow(windowName, cameraFeed);
 		//imshow(windowName1, HSV);
 		setMouseCallback("Original Image", on_mouse, &p);
 		//delay 30ms so that screen can refresh.
 		//image will not appear without this waitKey() command
-		waitKey(40);
+		waitKey(30);
 	 //a-roz  b-galben
 	if(i==0)
 	{oldpos=b;strateg("fs",300);
