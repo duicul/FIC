@@ -332,7 +332,7 @@ int main(int argc, char* argv[])
 	{newpos=b;
 	  printf("newpos %d-%d",newpos.x,newpos.y);
 	  m=(float)(newpos.y-oldpos.y)/(float)(newpos.x-oldpos.x);
-	  line(cameraFeed, Point(oldpos.x, oldpos.y), Point(newpos.x , newpos.y), Scalar(0, 100, 255), 2);
+	  //line(cameraFeed, Point(oldpos.x, oldpos.y), Point(newpos.x , newpos.y), Scalar(0, 100, 255), 2);
 	  if(oldpos.x!=newpos.x||oldpos.y!=newpos.y)
       {nd=sqrt((newpos.x-a.x)^2+(newpos.y-a.y)^2);
        od=sqrt((oldpos.x-a.x)^2+(oldpos.y-a.y)^2);
@@ -348,17 +348,17 @@ int main(int argc, char* argv[])
 	{printf("Reverse\n");
 	  if(a.y>m*(a.x-newpos.x) +newpos.y+var)
 	  {strateg("ll",300);}
-	  else if(a.y<=m*(a.x-newpos.x) +newpos.y-var)
+	  else if(a.y<=m*(a.x-newpos.x)+newpos.y-var)
 	    {strateg("rr",300);}
 	}
 	else{
-	if(a.y>m*(a.x-newpos.x) +newpos.y+var)
+	if(a.y>m*(a.x-newpos.x)+newpos.y+var)
 	{strateg("lf",300);}
-	  else if(a.y<m*(a.x-newpos.x) +newpos.y-var)
+	  else if(a.y<m*(a.x-newpos.x)+newpos.y-var)
 	  {strateg("rf",300);}
 	 else {strateg("ff",1000);}
 	}}}
-
+    waitKey(30);
    }
   }
 
