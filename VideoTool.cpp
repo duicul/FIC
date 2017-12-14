@@ -248,15 +248,9 @@ void trackFilteredObject(int &x, int &y, Mat threshold, Mat &cameraFeed) {
 	}
 }
 
-/*void setObj(Scalar mn,Scalar mx,Mat tr,Mat cf,Mat HSV,bool useMorphOps,bool trackObjects,struct robo *a)
-{inRange(HSV, mn , mx , tr);
- if (useMorphOps)
-		{morphOps(tr);}
-  if (trackObjects)
-		{trackFilteredObject(a->x, a->y, tr, cf);}
+void rot(struct robo *a)
+{ a->x=FRAME_WIDTH-a->x;
 }
-*/
-
 
 int main(int argc, char* argv[])
 {printf("Start");
@@ -307,9 +301,7 @@ int main(int argc, char* argv[])
 		cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
 		//filter HSV image between values and store filtered image to
 		//threshold matrix
-		//setObj(Scalar(H_MIN,S_MIN,V_MIN),Scalar(H_MAX,S_MAX,V_MAX),threshold,cameraFeed,HSV,useMorphOps,trackObjects,&a);
-		//setObj(Scalar(H_MIN1,S_MIN1,V_MIN1),Scalar(H_MAX1,S_MAX1,V_MAX1),threshold1,cameraFeed,HSV,useMorphOps,trackObjects,&b);
-		inRange(HSV, Scalar(H_MIN, S_MIN, V_MIN), Scalar(H_MAX, S_MAX, V_MAX), threshold);
+        inRange(HSV, Scalar(H_MIN, S_MIN, V_MIN), Scalar(H_MAX, S_MAX, V_MAX), threshold);
 		inRange(HSV, Scalar(H_MIN1, S_MIN1, V_MIN1), Scalar(H_MAX1, S_MAX1, V_MAX1), threshold1);
 		//perform morphological operations on thresholded image to eliminate noise
 		//and emphasize the filtered object(s)
@@ -323,8 +315,8 @@ int main(int argc, char* argv[])
 		{trackFilteredObject(a.x, a.y, threshold, cameraFeed);
          trackFilteredObject(b.x, b.y, threshold1,cameraFeed);}
 		//show frames
-		//imshow(windowName4, threshold1);
-		//imshow(windowName2, threshold);
+		imshow(windowName4, threshold1);
+		imshow(windowName2, threshold);
 		imshow(windowName, cameraFeed);
 		//imshow(windowName1, HSV);
 		setMouseCallback("Original Image", on_mouse, &p);
@@ -345,18 +337,25 @@ int main(int argc, char* argv[])
       {nd=sqrt((newpos.x-a.x)^2+(newpos.y-a.y)^2);
        od=sqrt((oldpos.x-a.x)^2+(oldpos.y-a.y)^2);
 	printf("New dist= %d Old dist= %d \n",nd,od);
+
+       if(newpos.x<oldpos.x) //simetrie Ox fata de mijloc frame daca merge spre stanga
+        {rot(&newpos);
+        rot(&oldpos);
+        rot(&a);
+        rot(&b);}
+
        if(nd>od)
 	{printf("Reverse\n");
 	  if(a.y>m*(a.x-newpos.x) +newpos.y+var)
 	  {strateg("ll",300);}
 	  else if(a.y<=m*(a.x-newpos.x) +newpos.y-var)
-	  {strateg("rr",300);}
+	    {strateg("rr",300);}
 	}
 	else{
 	if(a.y>m*(a.x-newpos.x) +newpos.y+var)
-	{strateg("rf",300);}
+	{strateg("lf",300);}
 	  else if(a.y<m*(a.x-newpos.x) +newpos.y-var)
-	  {strateg("lf",300);}
+	  {strateg("rf",300);}
 	 else {strateg("ff",1000);}
 	}}}
 
