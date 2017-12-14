@@ -250,6 +250,7 @@ void trackFilteredObject(int &x, int &y, Mat threshold, Mat &cameraFeed) {
 
 void rot(struct robo *a)
 { a->x=FRAME_WIDTH-a->x;
+a->y=FRAME_HEIGHT-a->y;
 }
 
 int main(int argc, char* argv[])
