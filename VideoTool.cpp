@@ -1,9 +1,9 @@
 #include <sstream>
 #include <string>
 #include <iostream>
-//#include <opencv2\highgui.h>
+#include <opencv2\highgui.h>
 #include "opencv2/highgui/highgui.hpp"
-//#include <opencv2\cv.h>
+#include <opencv2\cv.h>
 #include "opencv2/opencv.hpp"
 #include <stdio.h>
 #include <sys/socket.h>
@@ -13,7 +13,7 @@
 #include <time.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-//#include <math.h>
+#include <math.h>
 #define PORT 20232
 #define DEL 500
     struct sockaddr_in address;
@@ -288,7 +288,7 @@ int main(int argc, char* argv[])
 
  int i,var=20;
  float m;
- int nd=0,od=0;
+ float nd=0,od=0;
  printf("Socket begin");
  struct robo oldpos,newpos;
  setsock(20232,"193.226.12.217");
@@ -335,11 +335,11 @@ int main(int argc, char* argv[])
 	  m=(float)(newpos.y-oldpos.y)/(float)(newpos.x-oldpos.x);
 	  //line(cameraFeed, Point(oldpos.x, oldpos.y), Point(newpos.x , newpos.y), Scalar(0, 100, 255), 2);
 	  if(oldpos.x!=newpos.x||oldpos.y!=newpos.y)
-      {nd=sqrt((newpos.x-a.x)^2+(newpos.y-a.y)^2);
-       od=sqrt((oldpos.x-a.x)^2+(oldpos.y-a.y)^2);
-	printf("New dist= %d Old dist= %d \n",nd,od);
-
-       if(newpos.x<oldpos.x) //simetrie Ox fata de mijloc frame daca merge spre stanga
+      {nd=sqrt((float)((newpos.x-a.x)^2+(newpos.y-a.y)^2));
+       od=sqrt((float)((oldpos.x-a.x)^2+(oldpos.y-a.y)^2));
+	printf("New dist= %f Old dist= %f \n",nd,od);
+    printf("Panta %f\n",m);
+       if(newpos.x<oldpos.x) //simetrie Ox si Oy fata de mijloc frame daca merge spre stanga
         {rot(&newpos);
         rot(&oldpos);
         rot(&a);
@@ -348,15 +348,15 @@ int main(int argc, char* argv[])
        if(nd>od)
 	{printf("Reverse\n");
 	  if(a.y>m*(a.x-newpos.x) +newpos.y+var)
-	  {strateg("ll",300);}
+	  {strateg("rr",300);}
 	  else if(a.y<=m*(a.x-newpos.x)+newpos.y-var)
-	    {strateg("rr",300);}
+	    {strateg("ll",300);}
 	}
 	else{
 	if(a.y>m*(a.x-newpos.x)+newpos.y+var)
-	{strateg("lf",300);}
+	{strateg("rf",300);}
 	  else if(a.y<m*(a.x-newpos.x)+newpos.y-var)
-	  {strateg("rf",300);}
+	  {strateg("lf",300);}
 	 else {strateg("ff",1000);}
 	}}}
     waitKey(30);
